@@ -41,7 +41,7 @@ let puerto;
 if (config.NODE_ENV === 'development') {
   puerto = config.ARGS.port; // default: '8080'
 } else {
-  puerto = 8080;
+  puerto = process.env.PORT;
 }
 export const PORT = puerto;
 export const MODE = config.ARGS.mode; // default: 'fork'
