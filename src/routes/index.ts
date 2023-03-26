@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
-import axios from 'axios';
+// import axios from 'axios';
 
+import { getAllProducts } from '../services/products.services';
 import productsRouter from './products.routes';
 import cartsRouter from './carts.routes';
 import usersRouter from './users.routes';
@@ -11,8 +12,8 @@ import infoRouter from './info.routes';
 const router = Router();
 
 router.get('/', async (req: Request, res: Response) => {
-  const response: any = await axios.get('/api/productos');
-  const productos = response.data;
+  const response: any = await getAllProducts();
+  const productos = response;
   res.render('index', { productos });
 });
 
