@@ -27,7 +27,19 @@ const products: any = [
   },
 ];
 
-const carts: any = [];
+const carts: any = [
+  {
+    id: '6421fd48c1e8aa6ceb8c50ac',
+    productos: [
+      {
+        prodId: 'a8d94e59-8b02-4e39-b382-f6a75343326d',
+        nombre: 'Tablet Philco',
+        cantidad: 3,
+      },
+    ],
+    direccion_entrega: 'San Martín 2413',
+  },
+];
 const messages: any = [];
 const orders: any = [];
 

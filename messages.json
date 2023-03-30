@@ -1,0 +1,82 @@
+[
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "Aldo Capezzali",
+      "direccion": "Sargento Cabral 2413",
+      "telefono": "2984279494"
+    },
+    "message": "carrito",
+    "time": "29/03/2023 10:00:15",
+    "id": "ff89104a-8782-49b0-80ff-2e6998d6c0ae"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "chatBot"
+    },
+    "message": "<p>Tu carrito tiene actualmente los siguientes productos:<br />- Nombre: undefined, cantidad: 8<br />- Nombre: undefined, cantidad: 1<br /></p>",
+    "time": "29/03/2023 10:00:16",
+    "id": "db707675-6f7d-45d2-9bae-9f2f36ba4cca"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "Aldo Capezzali",
+      "direccion": "Sargento Cabral 2413",
+      "telefono": "2984279494"
+    },
+    "message": "carrito",
+    "time": "29/03/2023 10:01:43",
+    "id": "4bc93b47-1eb6-42a9-bb4d-5e6227c6af7b"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "chatBot"
+    },
+    "message": "<p>Tu carrito tiene actualmente los siguientes productos:<br />- Nombre: Buzo Canguro Urban O'neill, cantidad: 8<br />- Nombre: Heladera inverter no frost Samsung RT32K5070, cantidad: 1<br /></p>",
+    "time": "29/03/2023 10:01:44",
+    "id": "db543c0f-8d84-4c75-9432-b258fd927c73"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "Aldo Capezzali",
+      "direccion": "Sargento Cabral 2413",
+      "telefono": "2984279494"
+    },
+    "message": "hola",
+    "time": "30/03/2023 06:23:06",
+    "id": "2850875e-879c-4b93-8f3d-4189bdb4533f"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "chatBot"
+    },
+    "message": "<p>No he podido comprender tu mensaje. Por favor ingresa una de las siguientes opciones:<br /><br />- Stock: Para conocer el stock de todos los productos.<br /><br />-Carrito: Para conocer el estado actual de tu carrito.</p>",
+    "time": "30/03/2023 06:23:06",
+    "id": "342efa79-a6fc-4856-b60c-536d01cd0327"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "Aldo Capezzali",
+      "direccion": "Sargento Cabral 2413",
+      "telefono": "2984279494"
+    },
+    "message": "carrito",
+    "time": "30/03/2023 06:23:44",
+    "id": "ba7fb740-2726-4307-a63a-5430642ff5cc"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "chatBot"
+    },
+    "message": "<p>Tu carrito tiene actualmente los siguientes productos:<br />- Nombre: Buzo Canguro Urban O'neill, cantidad: 8<br />- Nombre: Heladera inverter no frost Samsung RT32K5070, cantidad: 1<br /></p>",
+    "time": "30/03/2023 06:23:44",
+    "id": "95fdb6b5-c8d4-4069-99b5-3517e7bd3da8"
+  }
+]

@@ -74,3 +74,13 @@
 [31merror[39m [29-03-2023 20:53:45] | jwt expired
 [31merror[39m [29-03-2023 21:35:50] | jwt expired
 [31merror[39m [29-03-2023 21:35:59] | jwt expired
+[31merror[39m [29-03-2023 22:04:18] | ERROR => ValidationError: carrito: Cast to ObjectId failed for value "{
+  productos: [],
+  direccion_entrega: 'pepe',
+  id: '7efeb005-6d89-4ac5-9ea3-56c1c5f5e704'
+}" (type Object) at path "carrito" because of "BSONError"
+[31merror[39m [29-03-2023 22:04:48] | ERROR => ValidationError: carrito: Cast to ObjectId failed for value "{
+  productos: [],
+  direccion_entrega: 'pepe',
+  id: '54eb9138-caed-4e26-8ff8-222de0f9621e'
+}" (type Object) at path "carrito" because of "BSONError"

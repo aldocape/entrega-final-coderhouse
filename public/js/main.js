@@ -371,7 +371,7 @@ function sendMessage() {
                 // Hago un map para mostrar solamente nombres y cantidades de cada producto del carrito
                 const carrito = cart.cart.productos.map((product) => {
                   return {
-                    nombre: product.prodId.nombre,
+                    nombre: product.nombre,
                     cantidad: product.cantidad,
                   };
                 });
@@ -431,7 +431,9 @@ async function cambiarCategoria(categoria) {
     productos.forEach((product) => {
       outputProduct(product);
     });
+    document.getElementById('btnCarrito').classList.remove('is-hidden');
   } else {
+    document.getElementById('btnCarrito').classList.add('is-hidden');
     divProductos.innerHTML +=
       '<h3 id="sinProductos">No hay productos para mostrar</h3>';
   }
