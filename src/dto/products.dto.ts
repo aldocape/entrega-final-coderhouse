@@ -13,7 +13,7 @@ export default class ProductsDTO {
     this.descripcion = data.descripcion;
     this.foto = data.foto;
     this.precioARS = data.precio;
-    this.precioUSD = (data.precio / 397).toFixed(2);
+    this.precioUSD = (data.precio / 380).toFixed(2);
     this.hasStock = data.stock > 0;
     this.stock = data.stock;
     if (esMongo) this.id = data._id || '';

@@ -21,6 +21,15 @@ nav {
   margin: 20px auto;
 }
 
+div#header {
+  display: flex;
+  justify-content: space-between;
+}
+
+div#userPanel {
+  margin: 25px 0;
+}
+
 div.msgAccess {
   display: inline-block;
   vertical-align: middle;
@@ -28,7 +37,7 @@ div.msgAccess {
   background-color: #c5e5df;
 }
 
-/* Div para contener formulario de carga y listado de productos, y centro de mensajes */
+/* Div para contener formulario de carga y listado de productos */
 
 div.contenedor {
   background-color: #eaeaea;
@@ -49,26 +58,25 @@ div.prod-item:hover {
   max-height: 280px;
 }
 
+/* Estilo para el texto que dice 'No hay productos para mostrar' */
+h3#sinProductos {
+  margin: 20px 0;
+  padding: 10px 0 0 8px;
+  color: tomato;
+}
+
+/* Estilos para el chatBot */
+
 div#chat-bot {
   position: fixed;
   bottom: 10px;
   right: 20px;
   height: 350px;
   width: 300px;
-  /* overflow: scroll; */
   z-index: 1;
   background-color: rgb(239, 241, 206);
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
   border-radius: 8px;
-}
-
-div#header {
-  display: flex;
-  justify-content: space-between;
-}
-
-div#userPanel {
-  margin: 25px 0;
 }
 
 div#botMessages {

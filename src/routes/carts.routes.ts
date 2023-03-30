@@ -14,11 +14,12 @@ import { checkAuth } from '../utils/auth_jwt';
 const router = Router();
 
 // Función que crea un carrito, y para el caso que reciba también por 'body' un listado de productos con sus cantidades, los agrega a ese carrito
-// Endpoint: /api/carrito Método: POST
 
 // En este caso no verificamos usuario logueado porque el único momento en que se crea un carrito
 // es cuando se registra un usuario nuevo, dentro del método 'signup'
 // De esta manera, nos aseguramos de que se crean ambos al mismo tiempo
+
+// Endpoint: /api/carrito Método: POST
 router.post('/', checkAuth, saveCartController);
 
 // Función para listar todos los productos guardados en el carrito, recibe id de carrito

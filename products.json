@@ -1,0 +1,22 @@
+[
+  {
+    "nombre": "Heladera inverter no frost Samsung RT32K5070",
+    "descripcion": "Tipo de deshielo: no frost. Capacidad de 321 litros. Con freezer superior. Eficiencia energética A+.",
+    "categoria": "Electrodomesticos",
+    "codigo": "47398274329",
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_870654-MLA41133069889_032020-O.webp",
+    "precio": 214999,
+    "stock": "6",
+    "id": "7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2"
+  },
+  {
+    "nombre": "Buzo Canguro Urban O'neill",
+    "descripcion": "Tipo de tela: Algodón Material principal: Algodón Composición: 80% Algodón - 20% Poliéster. Frisa 280 grs Es oversize: No Con capucha: Sí",
+    "categoria": "Indumentaria",
+    "codigo": "47328977",
+    "foto": "https://http2.mlstatic.com/D_NQ_NP_614622-MLA54006415058_022023-O.webp",
+    "precio": 24000,
+    "stock": "25",
+    "id": "3fe30428-5c69-4247-a4dd-9be76395d532"
+  }
+]

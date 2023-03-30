@@ -5,43 +5,28 @@ import {
   updateCart,
 } from '../services/carts.services';
 
-import { getProductById } from '../services/products.services';
+// Importo función getProductById para asegurarme de que un producto existe
+// al momento de agregarlo al carrito
+import { getProductById, compareProducts } from '../services/products.services';
 
 import { Router, Request, Response } from 'express';
 import { Carrito } from '../interfaces';
 
-// import config from '../config';
-
-// import { EmailService } from '../services/email';
-// import { sendMSG } from './twilio.controller';
-
 const router = Router();
-
-// Importo función para saber si se ingresa un ObjectId válido
-import { ObjectId, isValidObjectId } from '../utils/tools';
 
 export const saveCartController = async (req: any, res: Response) => {
   const productsCart = req.body.productos;
 
   try {
-    // Al array de products no le pongo tipo Producto porque sólo tiene los ObjectID
+    // Creo products como un array vacío
     let products: [any?] = [];
-
-    let html = '<p>';
-    // let msgWSP = `Nuevo pedido de ${req.user.nombre}, E-mail: ${req.user.username}\n\n`;
 
     // Verifico si tengo un prodId que viene por body, creo un array con ese elemento, sino el array queda vacío
     if (productsCart) {
       for (let i = 0; i < productsCart.length; i++) {
         const prod = productsCart[i];
         products.push(prod);
-
-        // Luego de guardar el id de producto y la cantidad en el array para la BD,
-        // me aseguro de guardar también el nombre y la cantidad para el mail
-        html += `${prod.nombre} - Cantidad: ${prod.cantidad}<br />`;
-        // msgWSP += `${prod.nombre} - Cantidad: ${prod.cantidad}\n`;
       }
-      html += '</p>';
     }
 
     const cart: Carrito = {
@@ -53,32 +38,10 @@ export const saveCartController = async (req: any, res: Response) => {
     const newCart = await saveCart(cart);
 
     if (newCart) {
-      // Quitar estas líneas cuando vuelva a habilitar envío de mail
       res.status(201).json({
         msg: 'Carrito creado con éxito',
         newCart,
       });
-      // Usuario creó un nuevo carrito, envío mail al administrador
-      // const destination = config.GMAIL_EMAIL;
-      // const subject = `Nuevo pedido de ${req.user.nombre}, E-mail: ${req.user.username}`;
-      // const msgWhatsApp = sendMSG(
-      //   msgWSP,
-      //   'whatsapp:+' + config.ADMIN_CEL,
-      //   'https://cadenaser.com/resizer/c09Az9WzwQFwSZPN90pP1dhNqQ8=/736x552/filters:format(jpg):quality(70)/cloudfront-eu-central-1.images.arcpublishing.com/prisaradio/TOLWBLP2DRFWZPVWKRWIQ4WH3I.jpg'
-      // );
-      // Esta parte está comentada porque funciona únicamente si está validado el número de teléfono en twilio
-      // const sms = sendMSG(
-      //   'Su pedido ha sido recibido y en este momento se encuentra en proceso.\nGracias por su confianza en nosotros.',
-      //   req.user.telefono
-      // );
-      // Armo el mail cuyo cuerpo es la variable html con los datos del carrito
-      // EmailService.sendEmail(destination, subject, html).then((response) => {
-      //   // Una vez enviado el mail, respondo que el carrito fue creado con status 201
-      //   res.status(201).json({
-      //     msg: 'Carrito creado con éxito',
-      //     newCart,
-      //   });
-      // });
     } else {
       res.json({
         msg: 'Hubo un error al cargar el carrito',
@@ -96,24 +59,20 @@ export const getCartController = async (req: Request, res: Response) => {
   const id = req.params.id;
 
   try {
-    // Verifico que el objectId sea correcto
-    if (isValidObjectId(id)) {
-      const cart = await getCartById(id);
+    const cart = await getCartById(id);
 
-      if (cart) {
+    if (cart) {
+      if (cart.error) {
+        res.json(cart);
+      } else
         res.json({
           success: true,
           cart,
         });
-      } else
-        res.status(204).json({
-          success: false,
-          msg: 'No se ha encontrado un carrito con el id enviado',
-        });
     } else {
       res.json({
         success: false,
-        msg: 'El id proporcionado no es un ObjectId válido para MongoDB',
+        msg: 'No se ha encontrado un carrito con el id enviado',
       });
     }
   } catch (err: any) {
@@ -176,14 +135,20 @@ export const addProdCartController = async (req: Request, res: Response) => {
 
             for (let j = 0; j < productsCart.productos.length; j++) {
               if (
-                productsCart.productos[j].prodId._id.equals(productos[i].prodId)
+                compareProducts(
+                  productsCart.productos[j].prodId,
+                  productos[i].prodId
+                )
               ) {
                 array[j].cantidad += productos[i].cantidad;
                 insertItem = false;
               }
             }
 
-            if (insertItem) array.push(productos[i]);
+            if (insertItem) {
+              productos[i].nombre = product.nombre;
+              array.push(productos[i]);
+            }
           }
         }
 
@@ -191,6 +156,7 @@ export const addProdCartController = async (req: Request, res: Response) => {
           productos: array,
           direccion_entrega: req.body.direccion_entrega,
         };
+
         // Actualizo con el nuevo carrito en la base de datos
         const updatedCart = await updateCart(req.params.id, carrito);
         res.json(updatedCart);

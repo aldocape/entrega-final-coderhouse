@@ -55,7 +55,7 @@ export default class DaoFileSystem {
           case 'message':
             return items.map((message: any) => new MessagesDTO(message, false));
           default:
-            break;
+            return items;
         }
     } catch (err: any) {
       logger.error(`ERROR => ${err}`);
@@ -80,7 +80,43 @@ export default class DaoFileSystem {
           case 'message':
             return new MessagesDTO(item, false);
           default:
-            break;
+            return item;
+        }
+    } catch (err) {
+      logger.error(`ERROR => ${err}`);
+    }
+  }
+
+  compare(obj1: any, obj2: any) {
+    return obj1 === obj2;
+  }
+
+  async getMany(query: any) {
+    try {
+      // Intento leer el archivo, y si existe guardo los datos en un objeto 'info'
+      const filePath = path.resolve(__dirname, this.file);
+      const content = await fs.promises.readFile(filePath, 'utf8');
+      const info = JSON.parse(content);
+
+      const keys = Object.keys(query);
+      const items: any[] = [];
+
+      info.forEach((element: any) => {
+        if (element[keys[0]] === query[keys[0]]) {
+          items.push(element);
+        }
+      });
+
+      if (items)
+        switch (this.collection) {
+          case 'product':
+            return items.map(
+              (producto: any) => new ProductsDTO(producto, false)
+            );
+          case 'message':
+            return items.map((message: any) => new MessagesDTO(message, false));
+          default:
+            return items;
         }
     } catch (err) {
       logger.error(`ERROR => ${err}`);
@@ -205,7 +241,7 @@ export default class DaoFileSystem {
       const info = JSON.parse(content);
 
       // Con el método findIndex, verifico si existe algún producto con el id del objeto que recibe la función por parámetro
-      const index = info.findIndex((elem: any) => item.id === elem.id);
+      const index = info.findIndex((elem: any) => id === elem.id);
 
       // Si index = -1, el item con ese id no existe
       if (index < 0) {
@@ -213,6 +249,8 @@ export default class DaoFileSystem {
           msg: 'Elemento no encontrado',
         };
       }
+
+      if (!item.id) item.id = id;
 
       // Si el item buscado existe, lo reemplazo con el nuevo que viene por parámetro
       info.splice(index, 1, item);

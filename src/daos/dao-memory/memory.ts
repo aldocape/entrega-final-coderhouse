@@ -6,53 +6,30 @@ import MessagesDTO from '../../dto/messages.dto';
 const products: any = [
   {
     id: 'cc31e62d-d874-4278-94c1-aefc46989a0a',
-    nombre: 'Protector Solar para niños',
-    descripcion: 'Protector factor 50',
-    foto: 'https://http2.mlstatic.com/D_NQ_NP_708632-MLA52162580244_102022-O.webp',
+    nombre: 'Heladera inverter no frost Samsung RT32K5070',
+    descripcion:
+      'Tipo de deshielo: no frost. Capacidad de 321 litros. Con freezer superior. Eficiencia energética A+.',
+    categoria: 'Electrodomesticos',
+    foto: 'https://http2.mlstatic.com/D_NQ_NP_870654-MLA41133069889_032020-O.webp',
     codigo: '935984321',
-    precio: 1574,
+    precio: 214999,
     stock: 50,
   },
   {
     id: 'a8d94e59-8b02-4e39-b382-f6a75343326d',
     nombre: 'Tablet Philco',
     descripcion: 'Tp10a332 10.1 Ips 32gb 2gb Android 11 Con Funda',
+    categoria: 'Electrodomesticos',
     foto: 'https://http2.mlstatic.com/D_NQ_NP_886369-MLA52088853536_102022-O.webp',
     codigo: '498261984',
     precio: 30799,
     stock: 10,
   },
 ];
-const messages: any = [
-  {
-    author: {
-      email: 'aldocape@gmail.com',
-      nombre: 'Aldo',
-      apellido: 'Capezzali',
-      edad: 40,
-      alias: '',
-      avatar: '',
-    },
-    text: 'holaaa',
-    time: '12/02/2023 07:57:09',
-    id: '3e1e894e-a707-47ba-bbe3-0252371bc80a',
-  },
-  {
-    author: {
-      email: 'aldocape@gmail.com',
-      nombre: '',
-      apellido: '',
-      edad: '',
-      alias: '',
-      avatar:
-        'https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/1101.jpg',
-    },
-    text: 'hola ahi va otro mensaje',
-    time: '12/02/2023 09:08:32',
-    id: '7967fc31-63cb-495d-b446-a48f9c85c424',
-  },
-];
+
 const carts: any = [];
+const messages: any = [];
+const orders: any = [];
 
 export default class DaoMemory {
   private collection: string;
@@ -71,6 +48,9 @@ export default class DaoMemory {
         break;
       case 'message':
         this.recurso = messages;
+        break;
+      case 'order':
+        this.recurso = orders;
         break;
 
       default:
@@ -117,6 +97,33 @@ export default class DaoMemory {
       const item = this.recurso.find((e: any) => id === e.id);
       if (item) return item;
       return 0;
+    } catch (err) {
+      logger.error(`ERROR => ${err}`);
+    }
+  }
+
+  async getMany(query: any) {
+    try {
+      const keys = Object.keys(query);
+      const items: any[] = [];
+
+      this.recurso.forEach((element: any) => {
+        if (element[keys[0]] === query[keys[0]]) {
+          items.push(element);
+        }
+      });
+
+      if (items)
+        switch (this.collection) {
+          case 'product':
+            return items.map(
+              (producto: any) => new ProductsDTO(producto, false)
+            );
+          case 'message':
+            return items.map((message: any) => new MessagesDTO(message, false));
+          default:
+            break;
+        }
     } catch (err) {
       logger.error(`ERROR => ${err}`);
     }

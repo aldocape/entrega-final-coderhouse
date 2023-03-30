@@ -4,8 +4,9 @@ import {
   saveMsgController,
 } from '../controllers/messages.controllers';
 
-// Importo middleware para validación de datos para carga y edición de productos
+// Importo middleware para validación de datos para creación de mensajes
 import { inputMsgValidator } from '../middlewares/inputValidation';
+// Importo middleware para validación de usuario logueado
 import { checkAuth } from '../utils/auth_jwt';
 
 const router = Router();
@@ -14,8 +15,8 @@ const router = Router();
 // Endpoint: /api/mensajes/:username Método: GET
 router.get('/:username', checkAuth, getAllController);
 
-// // Recibe y agrega un mensaje, y lo devuelve con su id asignado
-// // Endpoint: /api/mensajes/ Método: POST
+// Recibe y agrega un mensaje, y lo devuelve con su id asignado
+// Endpoint: /api/mensajes/ Método: POST
 router.post('/', checkAuth, inputMsgValidator, saveMsgController);
 
 export default router;

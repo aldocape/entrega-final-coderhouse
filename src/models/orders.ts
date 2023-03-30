@@ -10,7 +10,7 @@ const collection: string = productsCollection;
 interface IOrder extends Document {
   userId: string;
   estado: Estado;
-  items: [
+  productos: [
     {
       prodId: string;
       cantidad: number;
@@ -21,7 +21,7 @@ interface IOrder extends Document {
 
 const orderSchema: Schema = new Schema(
   {
-    items: [
+    productos: [
       {
         prodId: {
           type: Schema.Types.ObjectId,

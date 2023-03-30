@@ -132,14 +132,15 @@ export default class DaoMongoDB {
     try {
       if (isValidObjectId(id)) {
         let doc: any;
-        // Pregunto si estoy en la colección de carrito para poder traerlo con toda la info
+        // Pregunto si estoy en la colección de carrito (u orden) para poder trae toda la info
         // de sus productos los cuales obtengo con 'populate'
-        if (this.collection === 'cart') {
+        if (this.collection === 'cart' || this.collection === 'order') {
           doc = await this.model.findById(id).populate('productos.prodId');
         } else {
           doc = await this.model.findById(id);
           if (doc)
             switch (this.collection) {
+              // Como productos y mensajes tienen sus dto, devuelvo el dto de uno u otro según corresponda
               case 'product':
                 return new ProductsDTO(doc, true);
 
@@ -218,6 +219,9 @@ export default class DaoMongoDB {
     try {
       let documents: any;
       if (this.collection === 'message') {
+        // Consulto específicamente si estoy en la colección de mensajes porque ésta
+        // tiene objetos anidados, y mongoose no me devuelve el valor si le paso el objeto anidado
+        // sino que hay que mandarlo como string
         documents = await this.model
           .find({ 'user.username': query.username })
           .exec();
@@ -226,6 +230,7 @@ export default class DaoMongoDB {
       }
       if (documents)
         switch (this.collection) {
+          // Devuelvo los dto de la colección que corresponda
           case 'message':
             return documents.map(
               (message: any) => new MessagesDTO(message, true)
@@ -240,5 +245,9 @@ export default class DaoMongoDB {
     } catch (error: any) {
       logger.error(`ERROR => ${error}`);
     }
+  }
+
+  compare(obj1: any, obj2: any) {
+    return obj1._id.equals(obj2);
   }
 }

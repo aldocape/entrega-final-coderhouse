@@ -18,6 +18,5 @@ export async function getOrderById(id: string) {
 
 export async function updateOrder(id: string, order: Orden) {
   const orderModified = await update('order', id, order);
-  console.log(orderModified);
   return orderModified;
 }

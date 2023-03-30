@@ -28,9 +28,10 @@ export const checkAuth = async (
   //get the token from the header if present
   const authHeader = req.headers.authorization;
 
-  if (!authHeader)
+  if (!authHeader) {
+    logger.error(`ruta '${req.baseUrl}' método '${req.method}' no autorizada`);
     return res.status(401).json({ status: 'error', msg: 'Unauthorized' });
-  else
+  } else
     try {
       const [bearer, jswtoken] = authHeader.split(' ');
 
@@ -39,8 +40,12 @@ export const checkAuth = async (
       // Obtengo todos los datos del usuario
       const user = await getUserById(decode.userId);
 
-      if (!user)
+      if (!user) {
+        logger.error(
+          `ruta '${req.baseUrl}' método '${req.method}' no autorizada`
+        );
         return res.status(400).json({ status: 'error', msg: 'Unauthorized' });
+      }
 
       req.user = user;
       next();

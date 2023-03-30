@@ -1,3 +1,10 @@
+export enum Categoria {
+  Almacen = 'Almacen',
+  Muebles = 'Muebles',
+  Electro = 'Electrodomesticos',
+  Ropa = 'Indumentaria',
+}
+
 export interface Producto {
   _id: string;
   nombre: string;
@@ -6,6 +13,7 @@ export interface Producto {
   foto?: string;
   precio: number;
   stock: number;
+  categoria: Categoria;
 }
 
 // Carrito es un array de ObjectId de productos
@@ -13,6 +21,7 @@ export interface Carrito {
   productos: [
     {
       prodId: string;
+      nombre: string;
       cantidad: number;
     }?
   ];
@@ -54,7 +63,7 @@ export enum Estado {
 export interface Orden {
   _id: string;
   userId: string;
-  items: [
+  productos: [
     {
       prodId: string;
       cantidad: number;

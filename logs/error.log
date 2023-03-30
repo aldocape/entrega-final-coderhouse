@@ -51,3 +51,26 @@
 [31merror[39m [25-03-2023 22:02:40] | jwt expired
 [31merror[39m [25-03-2023 22:02:45] | jwt expired
 [31merror[39m [25-03-2023 23:20:57] | jwt expired
+[31merror[39m [27-03-2023 16:47:10] | ERROR => CastError: Cast to string failed for value "{ categoria: 'almacen' }" (type Object) at path "categoria" for model "product"
+[31merror[39m [27-03-2023 16:56:45] | ERROR => CastError: Cast to string failed for value "{ categoria: 'Muebles' }" (type Object) at path "categoria" for model "product"
+[31merror[39m [27-03-2023 18:27:56] | jwt expired
+[31merror[39m [27-03-2023 18:32:09] | jwt expired
+[31merror[39m [27-03-2023 18:32:10] | jwt expired
+[31merror[39m [28-03-2023 18:06:45] | jwt expired
+[31merror[39m [28-03-2023 19:07:13] | jwt expired
+[31merror[39m [28-03-2023 19:07:21] | jwt expired
+[31merror[39m [28-03-2023 20:08:06] | jwt expired
+[31merror[39m [29-03-2023 17:51:24] | jwt malformed
+[31merror[39m [29-03-2023 19:46:24] | jwt expired
+[31merror[39m [29-03-2023 19:46:30] | jwt expired
+[31merror[39m [29-03-2023 19:54:54] | ERROR => Error: ENOENT: no such file or directory, open '/home/aldo/Documentos/proyectos/entrega-final-coderhouse/products.json'
+[31merror[39m [29-03-2023 19:55:06] | ERROR => Error: ENOENT: no such file or directory, open '/home/aldo/Documentos/proyectos/entrega-final-coderhouse/products.json'
+[31merror[39m [29-03-2023 20:00:22] | ERROR => Error: ENOENT: no such file or directory, open '/home/aldo/Documentos/proyectos/entrega-final-coderhouse/carts.json'
+[31merror[39m [29-03-2023 20:16:52] | ERROR => TypeError: items.map is not a function
+[31merror[39m [29-03-2023 20:16:56] | ERROR => TypeError: items.map is not a function
+[31merror[39m [29-03-2023 20:18:18] | ERROR => TypeError: items.map is not a function
+[31merror[39m [29-03-2023 20:18:29] | ERROR => TypeError: items.map is not a function
+[31merror[39m [29-03-2023 20:18:32] | ERROR => TypeError: items.map is not a function
+[31merror[39m [29-03-2023 20:53:45] | jwt expired
+[31merror[39m [29-03-2023 21:35:50] | jwt expired
+[31merror[39m [29-03-2023 21:35:59] | jwt expired

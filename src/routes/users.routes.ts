@@ -1,4 +1,4 @@
-import { Router, Request, Response, NextFunction } from 'express';
+import { Router, Request, Response } from 'express';
 
 import {
   loginController,
@@ -16,11 +16,11 @@ import { checkAuth } from '../utils/auth_jwt'; // Verifica que exista un usuario
 
 const router = Router();
 
-// Logout del usuario
+// Renderizo vista Logout del usuario
 // Endpoint: /logout Método: GET
 router.get('/logout/:user_id', logout);
 
-// Nuevo registro de usuario
+// Renderizo vista Registro de nuevo usuario
 // Endpoint: /register Método: GET
 router.get('/register', (req: Request, res: Response) => {
   res.render('register', { msg: '' });
@@ -28,6 +28,7 @@ router.get('/register', (req: Request, res: Response) => {
 
 // El router de obtener todos los usuarios lo implemento de esta manera
 // porque no me permite importar el controlador, me da un error de Typescript
+// Sólo puede acceder un usuario administrador
 router.get(
   '/api/usuarios',
   checkAuth,
@@ -51,8 +52,12 @@ router.get(
   }
 );
 
+// Creación de nuevo usuario
+// Recibe por body todos los campos del formulario de nuevo usuario, y los valida con el middleware inputUsrValidator
 router.post('/signup', inputUsrValidator, signUpController);
+// Login de usuario
 router.post('/login', loginController);
+// Obtener datos del usuario logueado
 router.get('/usuarios/session', checkAuth, getSession);
 
 export default router;

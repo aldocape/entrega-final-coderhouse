@@ -21,8 +21,9 @@ if (DAO) {
   ordersHandler = DAO.ordersHandler();
 }
 
-// Creo una instancia de DAO para usuarios para manejar con mongo exclusivamente,
-// porque sino no puedo implementar passport-local debido a que usuarios necesita la librería connect-mongo
+// Si me llega por línea de comandos una dao distinta a mongo, le paso el parámetro false
+// para indicarle que use de la BD de mongo la colección usuarios, pero todo el resto
+// que lo haga con la dao seleccionada
 if (daoArgs !== 'mongo') {
   DAO = DaoFactory.create('mongo', false);
 }
@@ -170,6 +171,15 @@ export async function matchPassword(
   switch (collection) {
     case 'user':
       return await usersHandler.matchPassword(password1, password2);
+    default:
+      break;
+  }
+}
+
+export function compare(collection: string, object1: any, object2: any) {
+  switch (collection) {
+    case 'product':
+      return productsHandler.compare(object1, object2);
     default:
       break;
   }

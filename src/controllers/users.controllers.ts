@@ -11,8 +11,8 @@ import logger from '../middlewares/logger';
 import config from '../config';
 import { EmailService } from '../services/email.services';
 
-export const sendMail = async (user: any) => {
-  // Usuario creado, armo cuerpo de mensaje y envío de mail
+const sendMail = async (user: any) => {
+  // Usuario creado, armo cuerpo de mensaje y envío el mail
   const destination = config.GMAIL_EMAIL || 'aldocape@gmail.com';
   const subject = 'Nuevo Registro de Usuario';
   const content = `
@@ -101,11 +101,9 @@ export const loginController = async (
   }
 };
 
-export const getSession = async (
-  req: any,
-  res: Response,
-  next: NextFunction
-) => {
+// Esta función la utilizo para obtener datos del usuario a partir de su token,
+// ya que antes de llegar aquí pasa por el middleware de autenticación de token
+export const getSession = async (req: any, res: Response) => {
   res.json({
     status: 'ok',
     user: req.user,

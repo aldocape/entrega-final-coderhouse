@@ -20,7 +20,7 @@ if (MODE === 'cluster' && cluster.isPrimary) {
   /* --------------------------------------------------------------------------- */
   /* WORKERS */
 
-  //   logger.info(`PID WORKER ${process.pid}`);
+  logger.info(`PID WORKER ${process.pid}`);
 
   myHTTPServer.listen(PORT, () => {
     logger.info(`🚀 Servidor escuchando en el puerto ${PORT}`);
@@ -28,7 +28,6 @@ if (MODE === 'cluster' && cluster.isPrimary) {
 
   // En caso de error, lo muestro a través del método 'on' sobre la salida de 'listen'
   myHTTPServer.on('error', (error: any) =>
-    // logger.error(`Error en servidor ${error}`)
-    console.log(`Error en servidor ${error}`)
+    logger.error(`Error en servidor ${error}`)
   );
 }

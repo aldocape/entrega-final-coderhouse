@@ -1,0 +1,18 @@
+[
+  {
+    "productos": [
+      {
+        "prodId": "3fe30428-5c69-4247-a4dd-9be76395d532",
+        "cantidad": 8,
+        "nombre": "Buzo Canguro Urban O'neill"
+      },
+      {
+        "prodId": "7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2",
+        "cantidad": 1,
+        "nombre": "Heladera inverter no frost Samsung RT32K5070"
+      }
+    ],
+    "direccion_entrega": "Sargento Cabral 2413",
+    "id": "6421fd48c1e8aa6ceb8c50ac"
+  }
+]

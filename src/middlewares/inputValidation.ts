@@ -47,6 +47,7 @@ export const middlewareValidatorInsert = (
     nombre,
     codigo,
     descripcion,
+    categoria: req.body.categoria,
     precio,
     foto,
     stock,
@@ -162,6 +163,15 @@ export const inputUsrValidator = (
     return res
       .status(400)
       .json({ status: 'error', msg: 'Complete todos los campos obligatorios' });
+
+  const emailRegex =
+    /^[-\w.%+]{1,64}@(?:[A-Z0-9-]{1,63}\.){1,125}[A-Z]{2,63}$/i;
+  //Se muestra un texto a modo de ejemplo, luego va a ser un icono
+  if (!emailRegex.test(username))
+    return res.status(400).json({
+      status: 'error',
+      msg: 'Campo E-Mail incorrecto: Debe ingresar un texto con formato de E-Mail',
+    });
 
   if (password !== password2)
     return res

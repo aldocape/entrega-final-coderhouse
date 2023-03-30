@@ -65,8 +65,7 @@ class MongoDB extends DAO {
 class FileSystem extends DAO {
   private static instance: FileSystem;
   private constructor() {
-    // No creo una instancia para manejo de usuarios porque
-    // no se puede implementar usando passport local y connect-mongo
+    // Operaciones con usuarios se hacen desde la BD de Mongo, el resto con filesystem
     const instances = {
       products: DaoFileSystem.getInstance('product'),
       carts: DaoFileSystem.getInstance('cart'),
@@ -88,8 +87,7 @@ class FileSystem extends DAO {
 class Memory extends DAO {
   private static instance: Memory;
   private constructor() {
-    // No creo una instancia para manejo de usuarios porque
-    // no se puede implementar usando passport local y connect-mongo
+    // Operaciones con usuarios se hacen desde la BD de Mongo, el resto con memory
     const instances = {
       products: DaoMemory.getInstance('product'),
       carts: DaoMemory.getInstance('cart'),
@@ -111,7 +109,7 @@ class Memory extends DAO {
 export class DaoFactory {
   static create(type: string, esMongo: boolean) {
     // esMongo es una variable booleana que me sirve para saber si voy a usar un dao distinto a mongo
-    // ya que de esa manera necesito instanciar mongo sólo para usuarios, por tema passport-local
+    // para trabajar únicamente con colección de usuarios en MongoDB y el resto con la dao elegida
 
     switch (type) {
       case 'mongo':

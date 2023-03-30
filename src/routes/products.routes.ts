@@ -5,6 +5,7 @@ import {
   updateProdController,
   getProdByIdController,
   deleteProdByIdController,
+  getManyController,
 } from '../controllers/products.controllers';
 
 // Importo middlewares de autenticación de usuario autorizado
@@ -36,6 +37,10 @@ router.get('/', getAllController);
 // Devuelvo un producto según su id
 // Endpoint: /api/productos/:id    Método: GET
 router.get('/:id', getProdByIdController);
+
+// Devuelvo todos los productos de una determinada categoría
+// Endpoint: /api/productos/categoria/:categoria    Método: GET
+router.get('/categoria/:categoria', getManyController);
 
 // Recibe un id y actualiza un producto, en caso de existir
 // Endpoint: /api/productos/:id    Método: PUT

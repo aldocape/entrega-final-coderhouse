@@ -1,14 +1,20 @@
+// Obtengo elementos del DOM para renderizar el panel del Usuario
+
 const userPanel = document.getElementById('userPanel');
 const domicilio = document.getElementById('domicilio');
 const bienvenido = document.getElementById('bienvenido');
 const user_id = document.getElementById('user_id');
 const carrito_id = document.getElementById('carrito_id');
 
+// Obtengo elementos del DOM para renderizar y hacer operaciones con el formulario de Login
+
 const formLogin = document.getElementById('login-form');
 const inputUserName = document.getElementById('username');
 const inputPassword = document.getElementById('password');
+// accessOK es una capa que le indica al usuario que inició sesión y que puede cargar productos
 const accessMsg = document.getElementById('accessOK');
 
+// Obtengo form de productos
 const formProduct = document.getElementById('product-form');
 
 // Armo el túnel con el server (Handshake)
@@ -28,6 +34,7 @@ async function api(
     body = JSON.stringify(body);
   }
 
+  // Obtengo el token de localStorage y lo paso como header en la request
   const token = localStorage.getItem('token');
   const headers = {
     'Content-type': 'application/json',
@@ -92,16 +99,23 @@ function updateLoginStatus(user) {
   // Muestro el chatBot
   document.getElementById('chat-bot').classList.remove('is-hidden');
 
-  // Cargo la dirección de entrega del usuario en un input y muestro checkboxes para armar carrito
-  document.getElementById('direccion_entrega').value = user.direccion;
-  document.getElementById('btnCarrito').classList.remove('is-hidden');
-  const cartOptions = document.getElementsByClassName('cartOptions');
-  for (let i = 0; i < cartOptions.length; i++) {
-    cartOptions[i].classList.remove('is-hidden');
-  }
+  const btnCarrito = document.getElementById('btnCarrito');
+  // Verifico que btnCarrito existe (en la vista productList.ejs validamos que haya productos para mostrarlo)
+  // entonces si no existe btnCarrito, significa que no hay productos, por lo tanto tampoco activamos los checks para elegir cantidad y confirmar carrito
+  if (btnCarrito) {
+    // Cargo la dirección de entrega del usuario en un input y muestro checkboxes para armar carrito
+    const direccion_entrega = document.getElementById('direccion_entrega');
+    direccion_entrega.value = user.direccion;
+    btnCarrito.classList.remove('is-hidden');
 
-  // Muestro el carrito actual del usuario
-  outputCart(user.carrito);
+    const cartOptions = document.getElementsByClassName('cartOptions');
+    for (let i = 0; i < cartOptions.length; i++) {
+      cartOptions[i].classList.remove('is-hidden');
+    }
+
+    // Muestro el carrito actual del usuario
+    outputCart(user.carrito);
+  }
 }
 
 async function login() {
@@ -123,6 +137,8 @@ async function login() {
 }
 
 async function logout() {
+  // Obtengo el user_id de un input hidden del front end, para pasarlo como parámetro a logout
+  // y así poder mostrar su nombre y apellido
   const user_id = document.getElementById('user_id').value;
   document.location.href = `/logout/${user_id}`;
 }
@@ -166,6 +182,7 @@ async function createProduct() {
   // Obtengo datos de los input del form
   const nombre = document.getElementById('nombre');
   const descripcion = document.getElementById('descripcion');
+  const categoria = document.getElementById('categoria');
   const codigo = document.getElementById('codigo');
   const foto = document.getElementById('foto');
   const precio = document.getElementById('precio');
@@ -175,6 +192,7 @@ async function createProduct() {
   const newProduct = {
     nombre: nombre.value,
     descripcion: descripcion.value,
+    categoria: categoria.value,
     codigo: codigo.value,
     foto: foto.value,
     precio: precio.value,
@@ -191,8 +209,16 @@ async function createProduct() {
 
       // Emite un evento 'newProduct' al server
       socket.emit('newProduct', data.newProd);
-    }
 
+      const btnCarrito = document.getElementById('btnCarrito');
+      // Si no existe la capa 'btnCarrito', es porque aún no hay productos
+      // Recargo la página para que la vista productList.ejs renderice la capa btnCarrito
+      if (!btnCarrito) {
+        setTimeout(() => {
+          document.location.reload();
+        }, 2000);
+      }
+    }
     // Si salió todo bien, se va a mostrar un mensaje de que se guardó correctamente, sino mostrará cuál es el error
     divProd.innerHTML = data.msg;
   });
@@ -242,7 +268,7 @@ async function armarCarrito() {
 
   if (cart) {
     divCart.innerHTML = 'El/los producto/s ha/n sido agregado/s al carrito.';
-    outputCart(cart._id);
+    outputCart(userData.user.carrito);
   } else {
     divCart.innerHTML =
       'Ha ocurrido un error al agregar el o los productos seleccionados al carrito.';
@@ -252,6 +278,8 @@ async function armarCarrito() {
 // Función para renderizar agregado de productos usando el DOM
 function outputProduct(product) {
   const divTabla = document.getElementById('tabla');
+  const divProducts = document.getElementById('products');
+  const btnCarrito = document.getElementById('btnCarrito');
 
   // Trato de obtener el elemento que indica que no hay productos para mostrar (h3)
   const sinProductos = document.getElementById('sinProductos');
@@ -264,7 +292,7 @@ function outputProduct(product) {
   }
 
   // Agrego el nuevo producto al listado, usando el DOM
-  divTabla.innerHTML += `
+  divProducts.innerHTML += `
   <div class="col-sm-4">
     <div class="card mt-4 prod-item">
     <input type="hidden" id="input_nombre_${product.id}" value="${product.nombre}" />
@@ -284,13 +312,19 @@ function outputProduct(product) {
         
         <p class="card-text"><input type="checkbox" id="${product.id}" class="carritoCheck" onclick="verificarCheck('${product.id}')" />&nbsp;&nbsp;Agregar al carrito</p>
         <p class="card-text" id="input_${product.id}" style="display:none">
-        Hola soy el producto ${product.id}<br />
+        <br />
         Cantidad:&nbsp;&nbsp;<input type="number" id="input_cant_${product.id}" />
         
         </p>
       </div>
     </div>
   </div>`;
+  divTabla.appendChild(divProducts);
+  if (divProducts.nextSibling) {
+    divProducts.parentNode.insertBefore(btnCarrito, divProducts.nextSibling);
+  } else {
+    divProducts.parentNode.appendChild(btnCarrito);
+  }
 }
 
 // Función para renderizar el nuevo carrito usando el DOM
@@ -303,9 +337,9 @@ function outputCart(cartId) {
         '<p>Su carrito de compras tiene los siguientes elementos:<br /><br />';
 
       for (let i = 0; i < cart.cart.productos.length; i++) {
-        text += `&#x25cb;&nbsp;&nbsp;${cart.cart.productos[i].prodId.nombre} - Cantidad: ${cart.cart.productos[i].cantidad}<br />`;
+        text += `&#x25cb;&nbsp;&nbsp;${cart.cart.productos[i].nombre} - Cantidad: ${cart.cart.productos[i].cantidad}<br />`;
       }
-      text += `<br />-&nbsp;&nbsp;Direcci&oacute;n de entrega:&nbsp;&nbsp;${cart.cart.direccion_entrega}</p>`;
+      text += `<br />-&nbsp;&nbsp;Dirección de entrega:&nbsp;&nbsp;${cart.cart.direccion_entrega}</p>`;
 
       text += `<button class="btn btn-success mt-4"
       onclick="event.preventDefault(); generarOrden('${cartId}')">Generar orden de compra</button><div style="color: red" id="msgOrder"></div>`;
@@ -327,11 +361,14 @@ function sendMessage() {
     if (data.status === 'ok') {
       divChat.innerHTML = '';
 
+      // Consulto si el mensaje enviado por el usuario es 'carrito'
       if (data.newMsg.message === 'carrito') {
         api('/usuarios/session', 'GET').then((userData) => {
           if (userData.status !== 'error') {
+            // Si salió ok la operación de obtener datos del usuario, obtengo los productos de su carrito
             api(`/api/carrito/${userData.user.carrito}/productos`, 'GET').then(
               (cart) => {
+                // Hago un map para mostrar solamente nombres y cantidades de cada producto del carrito
                 const carrito = cart.cart.productos.map((product) => {
                   return {
                     nombre: product.prodId.nombre,
@@ -345,6 +382,7 @@ function sendMessage() {
             );
           }
         });
+        // Consulto si el mensaje que envía el usuario es 'stock'
       } else if (data.newMsg.message === 'stock') {
         api('/api/productos', 'GET').then((products) => {
           data.newMsg.object = products;
@@ -361,42 +399,66 @@ function sendMessage() {
   });
 }
 
+// Función para generar orden de compra
 async function generarOrden(cartId) {
+  // Armo un objeto con el cartId que viene por parámetro, y el user_id que obtengo del hidden que está en el userPanel
   const order = {
     cartId,
     userId: document.getElementById('user_id').value,
   };
-
+  // Inserto la nueva orden de compra en la BD y muestro mensaje que salió ok
   const newOrder = await api(`/api/ordenes`, 'POST', order);
   if (newOrder) {
     document.getElementById(
       'msgOrder'
     ).innerHTML = `<p style="margin-top: 20px">${newOrder.msg}</p>`;
+    // Debido a que el endpoint /api/ordenes deja vacío el carrito del user, lo que hago después es
+    // recargar la página para que me traiga el mismo carrito del usuario, pero ahora vacío
     setTimeout(() => {
       window.location.reload();
     }, 3000);
   }
 }
 
-// Recibo un evento de nuevo Producto desde el server
+// Función para mostrar productos de distintas categorías en el front
+async function cambiarCategoria(categoria) {
+  const productos = await api(`/api/productos/categoria/${categoria}`, 'GET');
+
+  const divProductos = document.getElementById('products');
+  divProductos.innerHTML = '';
+
+  if (productos.length) {
+    productos.forEach((product) => {
+      outputProduct(product);
+    });
+  } else {
+    divProductos.innerHTML +=
+      '<h3 id="sinProductos">No hay productos para mostrar</h3>';
+  }
+}
+
+// Escucho un evento de nuevo Producto desde el server
 socket.on('createProduct', (product) => {
   // Muestro el nuevo producto al final de la tabla, usando el DOM
   document.getElementById('formProduct').reset();
   outputProduct(product);
 });
 
+// Escucho un evento createBot desde el server
 socket.on('createBot', (nombre) => {
+  // Agrego nombre de usuario (que viene por parámetro) a la capa del chatBot
   document.getElementById(
     'botMessages'
   ).innerHTML = `<p>Hola ${nombre}! Soy el ChatBOT del sitio y estoy para ayudarte!</p>`;
   document.getElementById('usrChatLabel').innerHTML = nombre;
-  // document.getElementById('usrName').value = nombre;
 });
 
 async function guardarMsg(res) {
+  // La variable booleana chatBot le indica si el mensaje lo envió el user o el chatBot
   await api('/api/mensajes', 'POST', { mensaje: res, chatBot: true });
 }
 
+// Escucho evento de respuesta de chat
 socket.on('newResponse', (res) => {
   // Guardo el mensaje del chatbot en la BD y lo muestro en el front
   guardarMsg(res);

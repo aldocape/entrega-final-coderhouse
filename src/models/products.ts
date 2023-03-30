@@ -1,4 +1,5 @@
 import { model, Schema, Document } from 'mongoose';
+import { Categoria } from '../interfaces';
 
 // Exporto el nombre de la colección para usarla en el modelo de carrito
 // De esta manera, si después cambia el nombre, se referencia automáticamente a la nueva colección
@@ -11,6 +12,7 @@ interface IProduct extends Document {
   foto?: string;
   precio: number;
   stock: number;
+  categoria: Categoria;
 }
 
 const ProductSchema: Schema = new Schema(
@@ -21,6 +23,7 @@ const ProductSchema: Schema = new Schema(
     foto: { type: String, max: 300 },
     precio: { type: Number, require: true },
     stock: { type: Number, require: true },
+    categoria: { type: String, require: true },
   },
   { timestamps: true, versionKey: false }
 );

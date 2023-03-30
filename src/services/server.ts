@@ -38,6 +38,7 @@ const swaggerDoc = YAML.load(swaggerPath);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDoc));
 
 let puerto;
+// Verifico si estoy en desarrollo o en producción (en este último caso, el puerto se genera desde Railway, Heroku, etc)
 if (config.NODE_ENV === 'development') {
   puerto = config.ARGS.port; // default: '8080'
 } else {
@@ -117,10 +118,4 @@ myWSServer.on('connection', (socket: any) => {
     }
     socket.emit('newResponse', response);
   });
-
-  // // Escucho cuando se emite evento 'newCart' desde el front (botón "Confirmar carrito")
-  // socket.on('newCart', (cart: Carrito) => {
-  //   // Emito un evento para todos los sockets conectados
-  //   myWSServer.emit('eventCart', cart);
-  // });
 });

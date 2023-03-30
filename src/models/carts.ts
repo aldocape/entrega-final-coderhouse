@@ -10,14 +10,15 @@ interface ICart extends Document {
   productos: [
     {
       prodId: ObjectId;
+      nombre: string;
       cantidad: number;
     }
   ];
   direccion_entrega: string;
 }
 
-// La estructura del carrito contiene una propiedad llamada 'productos', que es un array de ObjectId de productos
-// y también un timestamp que guarda la fecha de creación y de modificación
+// La estructura del carrito contiene una propiedad llamada 'productos', que es un array de objetos cuyo id
+// es un ObjectId de productos que referencia a dicha colección, y otra propiedad cantidad representada por un número
 const cartSchema: Schema = new Schema(
   {
     productos: [
@@ -27,6 +28,7 @@ const cartSchema: Schema = new Schema(
           ref: collection,
           required: true,
         },
+        nombre: { type: String, require: true },
         cantidad: { type: Number, require: true },
       },
     ],

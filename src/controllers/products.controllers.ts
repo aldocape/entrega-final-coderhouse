@@ -4,17 +4,24 @@ import {
   getProductById,
   deleteProductById,
   updateProduct,
+  getManyProducts,
 } from '../services/products.services';
+
 import { Request, Response } from 'express';
 
+// Importo enum de Categorías para tenerlas disponibles para carga o consulta
+import { Categoria } from '../interfaces';
+
+// Guardar producto nuevo
 export const saveController = async (req: any, res: Response) => {
   try {
-    const { nombre, descripcion, codigo, foto, precio, stock } =
+    const { nombre, descripcion, categoria, codigo, foto, precio, stock } =
       req.productData;
 
     const newProduct: any = {
       nombre,
       descripcion,
+      categoria,
       codigo,
       foto,
       precio,
@@ -34,6 +41,7 @@ export const saveController = async (req: any, res: Response) => {
   }
 };
 
+// Obtener todos los productos
 export const getAllController = async (req: Request, res: Response) => {
   try {
     const products = await getAllProducts();
@@ -52,6 +60,55 @@ export const getAllController = async (req: Request, res: Response) => {
   }
 };
 
+// Obtener productos usando un criterio de búsqueda (en este caso: por Categoría)
+export const getManyController = async (req: Request, res: Response) => {
+  try {
+    let { categoria } = req.params;
+    let products;
+
+    if (categoria !== 'Todas') {
+      let cat: Categoria = Categoria.Almacen;
+
+      switch (categoria) {
+        case 'Muebles':
+          cat = Categoria.Muebles;
+          break;
+        case 'Almacen':
+          cat = Categoria.Almacen;
+          break;
+        case 'Electrodomesticos':
+          cat = Categoria.Electro;
+          break;
+        case 'Indumentaria':
+          cat = Categoria.Ropa;
+          break;
+        default:
+          break;
+      }
+
+      products = await getManyProducts({ categoria: cat });
+    } else {
+      // Si la categoría que llega por parámetro es 'Todas', muestro todos los productos
+      // Tuve que hacerlo de esta manera, debido a que si llega vacío, se va al endpoint de buscar producto por id
+      products = await getAllProducts();
+    }
+
+    if (products) {
+      res.json(products);
+    } else {
+      res.status(400).json({
+        msg: 'Hubo un error al obtener los productos',
+      });
+    }
+  } catch (err: any) {
+    res.status(400).json({
+      error: err.message,
+    });
+  }
+};
+
+// Obtiene una categoría por Id
+// Recibe por parámetro Id del producto
 export const getProdByIdController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -70,6 +127,8 @@ export const getProdByIdController = async (req: Request, res: Response) => {
   }
 };
 
+// Elimina un producto por Id
+// Recibe por parámetro Id del producto
 export const deleteProdByIdController = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
@@ -91,6 +150,8 @@ export const deleteProdByIdController = async (req: Request, res: Response) => {
   }
 };
 
+// Modifica un producto
+// Recibe: id por query params, y producto modificado por body
 export const updateProdController = async (req: any, res: Response) => {
   try {
     const { id } = req.params;

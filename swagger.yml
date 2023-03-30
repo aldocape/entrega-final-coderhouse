@@ -6,7 +6,7 @@ info:
 servers:
   - url: http://localhost:8080
     description: Local server
-  - url: https://mi-url-de-heroku.com
+  - url: https://entrega-final-coderhouse-production.up.railway.app/
     description: Production server
 
 components:
@@ -382,6 +382,118 @@ components:
         edad: 40
         telefono: 2984-1684984
         avatar: https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/108.jpg
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id de la orden de compra
+        productos:
+          type: array
+          description: Productos de la orden de compra
+          items:
+            type: object
+            properties:
+              prodId:
+                type: string
+                description: Id del producto de la orden de compra
+              cantidad:
+                type: integer
+                description: Cantidad de productos
+              precio:
+                type: integer
+                description: Precio del producto al momento de la compra
+        userId:
+          type: string
+          description: Id del usuario que generó la orden de compra
+        estado:
+          type: string
+          description: Estado de la compra ('Generada', 'Pagada', 'Enviando', 'Finalizada')
+        createdAt:
+          type: string
+          description: Fecha de creación de la orden de compra
+        updatedAt:
+          type: string
+          description: Fecha de última modificación de la orden de compra
+      example:
+        id: 64236b0de69973bf5da56888
+        productos:
+          - prodId: 64220ddcc1e8aa6ceb8c51c3
+            cantidad: 7
+            precio: 12864
+          - prodId: 64220e59c1e8aa6ceb8c51d0
+            cantidad: 3
+            precio: 9859.15
+        userId: 6421fd48c1e8aa6ceb8c50ae
+        estado: 'Generada'
+        createdAt: '2023-03-28T22:32:45.205+00:00'
+        updatedAt: '2023-03-28T22:32:45.205+00:00'
+    completedOrder:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id de la orden de compra
+        productos:
+          type: array
+          description: Productos de la orden de compra
+          items:
+            type: object
+            properties:
+              prodId:
+                type: string
+                description: Id del producto de la orden de compra
+              cantidad:
+                type: integer
+                description: Cantidad de productos
+              precio:
+                type: integer
+                description: Precio del producto al momento de la compra
+        userId:
+          type: string
+          description: Id del usuario que generó la orden de compra
+        estado:
+          type: string
+          description: Estado de la compra ('Generada', 'Pagada', 'Enviando', 'Finalizada')
+        createdAt:
+          type: string
+          description: Fecha de creación de la orden de compra
+        updatedAt:
+          type: string
+          description: Fecha de última modificación de la orden de compra
+      example:
+        id: 64236b0de69973bf5da56888
+        productos:
+          - prodId: 64220ddcc1e8aa6ceb8c51c3
+            cantidad: 7
+            precio: 12864
+          - prodId: 64220e59c1e8aa6ceb8c51d0
+            cantidad: 3
+            precio: 9859.15
+        userId: 6421fd48c1e8aa6ceb8c50ae
+        estado: 'Finalizada'
+        createdAt: '2023-03-28T22:32:45.205+00:00'
+        updatedAt: '2023-03-28T22:32:45.205+00:00'
+    newOrder:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: Id del usuario que generó la orden de compra
+        cartId:
+          type: string
+          description: Id del carrito del usuario que generó la orden de compra
+      example:
+        userId: 6421fd48c1e8aa6ceb8c50ae
+        cartId: 6421fd48c1e8aa6ceb8c50ac
+    completeOrder:
+      type: object
+      properties:
+        orderId:
+          type: string
+          description: Id de la orden que queremos completar
+      example:
+        orderId: 642361e8a15441dbbd354041
   securitySchemes:
     bearerAuth: # Nombre del esquema de seguridad que utilizaremos (Bearer)
       type: http
@@ -424,6 +536,27 @@ paths:
                 $ref: '#/components/schemas/Product'
         400:
           description: Error en la carga de datos
+  /api/productos/categoria/{categoria}:
+    get:
+      summary: Devuelve todos los productos de una categoría
+      tags:
+        - Productos
+      parameters:
+        - name: categoria
+          in: path
+          required: true
+          description: Categoría a buscar ('Muebles', 'Almacen', 'Electrodomesticos', 'Indumentaria')
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ProductDTO'
   /api/productos/{productId}:
     get:
       summary: Devuelve un producto por ID.
@@ -759,3 +892,64 @@ paths:
                   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NDFmNTU3OWFiNTRmODBjMjUzNmQ0YjQiLCJub21icmUiOiJBbGRvIENhcGV6emFsaSIsInVzZXJuYW1lIjoiYWxkb2NhcGU1QGdtYWlsLmNvbSIsImFkbWluIjp0cnVlLCJpYXQiOjE2Nzk3NzUwOTcsImV4cCI6MTY3OTc3ODY5N30.q79qPoRtTy4L446mkEjTn8s7_QZM7bKOk5shpDM_YBg
         '400':
           description: Bad request - Completar todos los campos // El E-Mail ya existe
+  /api/ordenes:
+    get:
+      summary: Obtiene todas las órdenes de compra del usuario logueado.
+      tags:
+        - Órdenes
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Devuelve todas las órdenes de compra realizadas por un usuario.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Order'
+        '401':
+          description: Usuario no autorizado
+    post:
+      tags:
+        - Órdenes
+      security:
+        - bearerAuth: []
+      summary: Creación de una nueva orden de compra
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/newOrder'
+        required: true
+      responses:
+        200:
+          description: Orden creada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+        401:
+          description: Usuario no autorizado
+  /api/ordenes/completar:
+    post:
+      tags:
+        - Órdenes
+      security:
+        - bearerAuth: []
+      summary: Marcar como completada una orden de compra
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/completeOrder'
+        required: true
+      responses:
+        200:
+          description: Orden completada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/completedOrder'
+        401:
+          description: Usuario no autorizado
