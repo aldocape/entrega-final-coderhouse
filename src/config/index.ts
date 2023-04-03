@@ -8,7 +8,7 @@ import { hideBin } from 'yargs/helpers';
 const args: any = yargs(hideBin(process.argv))
   .default('mode', 'fork')
   .default('port', '8080')
-  .default('dao', 'memory').argv;
+  .default('dao', 'mongo').argv;
 
 const argv: any = yargs(process.argv).argv;
 
