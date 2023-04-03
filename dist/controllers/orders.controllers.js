@@ -29,8 +29,9 @@ const sendMail = (orden, direccion_entrega, username) => __awaiter(void 0, void 
     // Orden creada, armo cuerpo de mensaje y envío el mail
     const destination = config_1.default.GMAIL_EMAIL || 'aldocape@gmail.com';
     const subject = 'Nueva Orden de compra';
+    const ordenId = (0, orders_services_1.leerIdOrden)(orden);
     let content = `
-      <p>Id de la orden: ${orden._id}<br />
+      <p>Id de la orden: ${ordenId}<br />
       Dirección de entrega: ${direccion_entrega}<br /></p>
       <p>Productos:<br /><ul>`;
     for (let i = 0; i < orden.productos.length; i++) {
@@ -54,10 +55,12 @@ const saveOrderController = (req, res) => __awaiter(void 0, void 0, void 0, func
                 estado: interfaces_1.Estado.Generada,
             };
             let orderItems = [];
+            let idProd;
             // Este mapeo lo hago para poder incorporar el precio actual, al array de productos y cantidades
             for (let i = 0; i < cart.productos.length; i++) {
+                idProd = (0, orders_services_1.leerIdOrden)(cart.productos[i].prodId);
                 orderItems.push({
-                    prodId: cart.productos[i].prodId._id,
+                    prodId: idProd,
                     cantidad: cart.productos[i].cantidad,
                     // Debido a que 'precio' es en realidad un 'populate' de prodId, el precio en realidad
                     // está llegando desde la BD de productos (precio actual) y no de la BD de carrito
@@ -78,7 +81,8 @@ const saveOrderController = (req, res) => __awaiter(void 0, void 0, void 0, func
                 // Si la orden se generó correctamente, obtengo datos completos de sus productos
                 // y armo envío de mail pasando por parámetro la orden, la dirección de entrega (que figura en el carrito)
                 // y el username (mail) del usuario que generó la orden
-                const orderDetails = yield (0, orders_services_1.getOrderById)(order._id.toString());
+                const ordenId = (0, orders_services_1.leerIdOrden)(order);
+                const orderDetails = yield (0, orders_services_1.getOrderById)(ordenId);
                 sendMail(orderDetails, carrito.direccion_entrega, user.username);
             }
             res.status(201).json({

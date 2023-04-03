@@ -87,3 +87,6 @@
 [31merror[39m [02-04-2023 21:54:49] | jwt expired
 [31merror[39m [02-04-2023 21:55:43] | ruta '' método 'GET' no autorizada
 [31merror[39m [02-04-2023 21:57:05] | ruta '' método 'GET' no autorizada
+[31merror[39m [02-04-2023 22:48:48] | ERROR => Error: EISDIR: illegal operation on a directory, read
+[31merror[39m [02-04-2023 22:50:44] | ERROR => Error: EISDIR: illegal operation on a directory, read
+[31merror[39m [02-04-2023 22:52:22] | ERROR => Error: EISDIR: illegal operation on a directory, read

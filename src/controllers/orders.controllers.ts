@@ -3,6 +3,7 @@ import {
   getOrders,
   updateOrder,
   getOrderById,
+  leerIdOrden,
 } from '../services/orders.services';
 
 // Importo getCartById para asegurarme que existe el carrito que llegue por parámetro,
@@ -29,8 +30,9 @@ const sendMail = async (
   const destination = config.GMAIL_EMAIL || 'aldocape@gmail.com';
   const subject = 'Nueva Orden de compra';
 
+  const ordenId = leerIdOrden(orden);
   let content = `
-      <p>Id de la orden: ${orden._id}<br />
+      <p>Id de la orden: ${ordenId}<br />
       Dirección de entrega: ${direccion_entrega}<br /></p>
       <p>Productos:<br /><ul>`;
   for (let i = 0; i < orden.productos.length; i++) {
@@ -60,10 +62,12 @@ export const saveOrderController = async (req: any, res: Response) => {
       };
 
       let orderItems = [];
+      let idProd;
       // Este mapeo lo hago para poder incorporar el precio actual, al array de productos y cantidades
       for (let i = 0; i < cart.productos.length; i++) {
+        idProd = leerIdOrden(cart.productos[i].prodId);
         orderItems.push({
-          prodId: cart.productos[i].prodId._id,
+          prodId: idProd,
           cantidad: cart.productos[i].cantidad,
           // Debido a que 'precio' es en realidad un 'populate' de prodId, el precio en realidad
           // está llegando desde la BD de productos (precio actual) y no de la BD de carrito
@@ -90,7 +94,10 @@ export const saveOrderController = async (req: any, res: Response) => {
         // y armo envío de mail pasando por parámetro la orden, la dirección de entrega (que figura en el carrito)
         // y el username (mail) del usuario que generó la orden
 
-        const orderDetails = await getOrderById(order._id.toString());
+        const ordenId = leerIdOrden(order);
+
+        const orderDetails = await getOrderById(ordenId);
+
         sendMail(orderDetails, carrito.direccion_entrega, user.username);
       }
 

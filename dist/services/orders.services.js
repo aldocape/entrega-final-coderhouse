@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrder = exports.getOrderById = exports.getOrders = exports.newOrder = void 0;
+exports.leerIdOrden = exports.updateOrder = exports.getOrderById = exports.getOrders = exports.newOrder = void 0;
 const daos_1 = require("../daos/daos");
 function newOrder(order) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -39,3 +39,8 @@ function updateOrder(id, order) {
     });
 }
 exports.updateOrder = updateOrder;
+function leerIdOrden(order) {
+    const id = (0, daos_1.leerId)('order', order);
+    return id;
+}
+exports.leerIdOrden = leerIdOrden;

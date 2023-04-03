@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.compare = exports.matchPassword = exports.encrypt = exports.getMany = exports.findOne = exports.update = exports.deleteAll = exports.deleteById = exports.getById = exports.getAll = exports.save = void 0;
+exports.leerId = exports.compare = exports.matchPassword = exports.encrypt = exports.getMany = exports.findOne = exports.update = exports.deleteAll = exports.deleteById = exports.getById = exports.getAll = exports.save = void 0;
 const config_1 = __importDefault(require("../config"));
 const factory_1 = require("./factory");
 let DAO;
@@ -210,3 +210,12 @@ function compare(collection, object1, object2) {
     }
 }
 exports.compare = compare;
+function leerId(collection, elem) {
+    switch (collection) {
+        case 'order':
+            return ordersHandler.leerId(elem);
+        default:
+            break;
+    }
+}
+exports.leerId = leerId;

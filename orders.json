@@ -1,0 +1,28 @@
+[
+  {
+    "userId": "6424af1686f0d8a4fe9b58df",
+    "estado": "Generada",
+    "productos": [
+      {
+        "cantidad": 4
+      },
+      {
+        "cantidad": 2
+      }
+    ],
+    "id": "c316e3a4-3355-40fd-8aec-279761bc30b7"
+  },
+  {
+    "userId": "6424af1686f0d8a4fe9b58df",
+    "estado": "Generada",
+    "productos": [
+      {
+        "cantidad": 4
+      },
+      {
+        "cantidad": 2
+      }
+    ],
+    "id": "182b2bbf-9f54-4249-a2dd-c2a99d52cc43"
+  }
+]

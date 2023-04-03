@@ -1,4 +1,4 @@
-import { save, getMany, update, getById } from '../daos/daos';
+import { save, getMany, update, getById, leerId } from '../daos/daos';
 import { Orden } from '../interfaces';
 
 export async function newOrder(order: Orden) {
@@ -19,4 +19,9 @@ export async function getOrderById(id: string) {
 export async function updateOrder(id: string, order: Orden) {
   const orderModified = await update('order', id, order);
   return orderModified;
+}
+
+export function leerIdOrden(order: Orden) {
+  const id = leerId('order', order);
+  return id;
 }

@@ -118,6 +118,9 @@ class DaoMemory {
             }
         });
     }
+    leerId(elem) {
+        return elem.id;
+    }
     getMany(query) {
         return __awaiter(this, void 0, void 0, function* () {
             try {

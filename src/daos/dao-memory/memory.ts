@@ -114,6 +114,10 @@ export default class DaoMemory {
     }
   }
 
+  leerId(elem: any) {
+    return elem.id;
+  }
+
   async getMany(query: any) {
     try {
       const keys = Object.keys(query);

@@ -162,6 +162,10 @@ export default class DaoMongoDB {
     }
   }
 
+  leerId(elem: any) {
+    return elem._id.toString();
+  }
+
   // Método update actualiza un documento, recibe dos variables por parámetro: el id y el documento modificado
   async update(id: string, obj: any) {
     try {

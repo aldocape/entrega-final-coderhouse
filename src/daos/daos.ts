@@ -184,3 +184,12 @@ export function compare(collection: string, object1: any, object2: any) {
       break;
   }
 }
+
+export function leerId(collection: string, elem: any) {
+  switch (collection) {
+    case 'order':
+      return ordersHandler.leerId(elem);
+    default:
+      break;
+  }
+}

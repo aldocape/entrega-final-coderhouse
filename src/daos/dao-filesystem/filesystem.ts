@@ -25,6 +25,9 @@ export default class DaoFileSystem {
       case 'message':
         this.file = '../../../messages.json';
         break;
+      case 'order':
+        this.file = '../../../orders.json';
+        break;
 
       default:
         break;
@@ -58,6 +61,38 @@ export default class DaoFileSystem {
             return items;
         }
     } catch (err: any) {
+      logger.error(`ERROR => ${err}`);
+    }
+  }
+
+  async getCartById(id: string) {
+    try {
+      // Intento leer el archivo, y si existe guardo los datos en un objeto 'info'
+      const filePath = path.resolve(__dirname, this.file);
+      const content = await fs.promises.readFile(filePath, 'utf8');
+      const info = JSON.parse(content);
+
+      const filePathProds = path.resolve(__dirname, '../../../products.json');
+      const contentProds = await fs.promises.readFile(filePathProds, 'utf8');
+      const infoProds = JSON.parse(contentProds);
+
+      // Con el método 'find' de array, busco el item que tenga el mismo id que el que se busca
+      let item = info.find((e: any) => e.id == id);
+
+      if (item) {
+        let product;
+        for (let i = 0; i < item.productos.length; i++) {
+          product = infoProds.find(
+            (e: any) => e.id == item.productos[i].prodId
+          );
+          if (product) {
+            item.productos[i].prodId.id = product.id;
+            item.productos[i].prodId.precio = product.precio;
+          }
+        }
+        return item;
+      }
+    } catch (err) {
       logger.error(`ERROR => ${err}`);
     }
   }
@@ -229,6 +264,10 @@ export default class DaoFileSystem {
       // Muestro el error en caso de que no haya podido leer el archivo
       logger.error(`ERROR => ${err}`);
     }
+  }
+
+  leerId(elem: any) {
+    return elem.id;
   }
 
   async update(id: string, item: any) {

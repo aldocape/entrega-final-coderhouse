@@ -113,6 +113,11 @@ function updateLoginStatus(user) {
       cartOptions[i].classList.remove('is-hidden');
     }
 
+    const optionsCart = document.getElementsByClassName('agregarCarrito');
+    for (let i = 0; i < optionsCart.length; i++) {
+      optionsCart[i].classList.remove('is-hidden');
+    }
+
     // Muestro el carrito actual del usuario
     outputCart(user.carrito);
   }
@@ -308,16 +313,17 @@ function outputProduct(product) {
           ${product.descripcion}
         </p>
         <p class="card-text">Precio ARS: $${product.precioARS}</p>
-        <p class="card-text">Precio USD: $${product.precioUSD}</p>`;
-  if (isLoggedIn()) {
-    divProducts.innerHTML += `<p class="card-text"><input type="checkbox" id="${product.id}" class="carritoCheck" onclick="verificarCheck('${product.id}')" />&nbsp;&nbsp;Agregar al carrito</p>
-          <p class="card-text" id="input_${product.id}" style="display:none">
-          <br />
-          Cantidad:&nbsp;&nbsp;<input type="number" id="input_cant_${product.id}" />
-          
-          </p>`;
-  }
-  divProducts.innerHTML += `</div></div></div>`;
+        <p class="card-text">Precio USD: $${product.precioUSD}</p>
+        
+        <p class="card-text agregarCarrito"><input type="checkbox" id="${product.id}" class="carritoCheck" onclick="verificarCheck('${product.id}')" />&nbsp;&nbsp;Agregar al carrito</p>
+        <p class="card-text" id="input_${product.id}" style="display:none">
+        <br />
+        Cantidad:&nbsp;&nbsp;<input type="number" id="input_cant_${product.id}" />
+        
+        </p>
+      </div>
+    </div>
+  </div>`;
   divTabla.appendChild(divProducts);
   if (divProducts.nextSibling) {
     divProducts.parentNode.insertBefore(btnCarrito, divProducts.nextSibling);
@@ -430,8 +436,14 @@ async function cambiarCategoria(categoria) {
     productos.forEach((product) => {
       outputProduct(product);
     });
-    if (isLoggedIn())
+    if (isLoggedIn()) {
       document.getElementById('btnCarrito').classList.remove('is-hidden');
+    } else {
+      const optionsCart = document.getElementsByClassName('agregarCarrito');
+      for (let i = 0; i < optionsCart.length; i++) {
+        optionsCart[i].classList.add('is-hidden');
+      }
+    }
   } else {
     document.getElementById('btnCarrito').classList.add('is-hidden');
     divProductos.innerHTML +=

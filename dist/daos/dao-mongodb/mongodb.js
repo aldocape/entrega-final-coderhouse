@@ -168,6 +168,9 @@ class DaoMongoDB {
             }
         });
     }
+    leerId(elem) {
+        return elem._id.toString();
+    }
     // Método update actualiza un documento, recibe dos variables por parámetro: el id y el documento modificado
     update(id, obj) {
         return __awaiter(this, void 0, void 0, function* () {
