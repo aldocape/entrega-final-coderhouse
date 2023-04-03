@@ -78,5 +78,25 @@
     "message": "<p>Tu carrito tiene actualmente los siguientes productos:<br />- Nombre: Buzo Canguro Urban O'neill, cantidad: 8<br />- Nombre: Heladera inverter no frost Samsung RT32K5070, cantidad: 1<br /></p>",
     "time": "30/03/2023 06:23:44",
     "id": "95fdb6b5-c8d4-4069-99b5-3517e7bd3da8"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "Aldo Capezzali",
+      "direccion": "Sargento Cabral 2413",
+      "telefono": "2984279494"
+    },
+    "message": "stock",
+    "time": "02/04/2023 09:56:08",
+    "id": "f06ad02c-f2b3-4e6f-9884-ed35fb81ef42"
+  },
+  {
+    "user": {
+      "username": "aldocape@gmail.com",
+      "nombre": "chatBot"
+    },
+    "message": "<p>Stock de todos los productos:<br />- Nombre: Heladera inverter no frost Samsung RT32K5070, stock: 6<br />- Nombre: Buzo Canguro Urban O'neill, stock: 25<br />- Nombre: Protector Solar para niños, stock: 50<br />- Nombre: Caramelos, stock: 500<br />- Nombre: CIF Multiuso, stock: 40<br />- Nombre: Cerveza Andes origen rubia, stock: 50<br /></p>",
+    "time": "02/04/2023 09:56:08",
+    "id": "61da9088-f29a-4d69-b3d0-49ab4e9c0b34"
   }
 ]

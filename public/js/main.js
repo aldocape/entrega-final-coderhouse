@@ -308,17 +308,16 @@ function outputProduct(product) {
           ${product.descripcion}
         </p>
         <p class="card-text">Precio ARS: $${product.precioARS}</p>
-        <p class="card-text">Precio USD: $${product.precioUSD}</p>
-        
-        <p class="card-text"><input type="checkbox" id="${product.id}" class="carritoCheck" onclick="verificarCheck('${product.id}')" />&nbsp;&nbsp;Agregar al carrito</p>
-        <p class="card-text" id="input_${product.id}" style="display:none">
-        <br />
-        Cantidad:&nbsp;&nbsp;<input type="number" id="input_cant_${product.id}" />
-        
-        </p>
-      </div>
-    </div>
-  </div>`;
+        <p class="card-text">Precio USD: $${product.precioUSD}</p>`;
+  if (isLoggedIn()) {
+    divProducts.innerHTML += `<p class="card-text"><input type="checkbox" id="${product.id}" class="carritoCheck" onclick="verificarCheck('${product.id}')" />&nbsp;&nbsp;Agregar al carrito</p>
+          <p class="card-text" id="input_${product.id}" style="display:none">
+          <br />
+          Cantidad:&nbsp;&nbsp;<input type="number" id="input_cant_${product.id}" />
+          
+          </p>`;
+  }
+  divProducts.innerHTML += `</div></div></div>`;
   divTabla.appendChild(divProducts);
   if (divProducts.nextSibling) {
     divProducts.parentNode.insertBefore(btnCarrito, divProducts.nextSibling);
@@ -431,7 +430,8 @@ async function cambiarCategoria(categoria) {
     productos.forEach((product) => {
       outputProduct(product);
     });
-    document.getElementById('btnCarrito').classList.remove('is-hidden');
+    if (isLoggedIn())
+      document.getElementById('btnCarrito').classList.remove('is-hidden');
   } else {
     document.getElementById('btnCarrito').classList.add('is-hidden');
     divProductos.innerHTML +=
