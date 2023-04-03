@@ -2,9 +2,13 @@
   {
     "productos": [
       {
-        "prodId": "7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2",
-        "cantidad": 1,
-        "nombre": "Heladera inverter no frost Samsung RT32K5070"
+        "prodId": {
+          "id": "cc31e62d-d874-4278-94c1-aefc46989a0a",
+          "nombre": "Protector Solar para niños",
+          "precio": 1574
+        },
+        "cantidad": 10,
+        "nombre": "Protector Solar para niños"
       }
     ],
     "direccion_entrega": "Sargento Cabral 2413",

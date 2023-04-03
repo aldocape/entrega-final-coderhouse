@@ -90,3 +90,11 @@
 [31merror[39m [02-04-2023 22:48:48] | ERROR => Error: EISDIR: illegal operation on a directory, read
 [31merror[39m [02-04-2023 22:50:44] | ERROR => Error: EISDIR: illegal operation on a directory, read
 [31merror[39m [02-04-2023 22:52:22] | ERROR => Error: EISDIR: illegal operation on a directory, read
+[31merror[39m [03-04-2023 16:30:53] | jwt expired
+[31merror[39m [03-04-2023 16:41:00] | ERROR => TypeError: Cannot create property 'id' on string '7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2'
+[31merror[39m [03-04-2023 16:44:59] | ERROR => TypeError: Cannot create property 'precio' on string '7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2'
+[31merror[39m [03-04-2023 16:45:06] | ERROR => TypeError: Cannot create property 'precio' on string '7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2'
+[31merror[39m [03-04-2023 16:45:07] | ERROR => TypeError: Cannot create property 'precio' on string '7ac1dcc8-e4a3-4f4f-b1e1-52cd49c887e2'
+[31merror[39m [03-04-2023 17:10:18] | ERROR => TypeError: Cannot read properties of undefined (reading 'prodId')
+[31merror[39m [03-04-2023 17:31:19] | jwt expired
+[31merror[39m [03-04-2023 18:09:31] | ruta '/api/carrito' método 'GET' no autorizada

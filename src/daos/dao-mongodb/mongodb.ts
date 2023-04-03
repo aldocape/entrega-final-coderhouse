@@ -132,23 +132,40 @@ export default class DaoMongoDB {
     try {
       if (isValidObjectId(id)) {
         let doc: any;
+
+        doc = await this.model.findById(id);
+        if (doc)
+          switch (this.collection) {
+            // Como productos y mensajes tienen sus dto, devuelvo el dto de uno u otro según corresponda
+            case 'product':
+              return new ProductsDTO(doc, true);
+
+            case 'message':
+              return new MessagesDTO(doc, true);
+            default:
+              break;
+          }
+
+        return doc;
+      } else {
+        return {
+          error: true,
+          msg: 'El id proporcionado no es un ObjectId válido para MongoDB',
+        };
+      }
+    } catch (err) {
+      logger.error(`ERROR => ${err}`);
+    }
+  }
+
+  async getWithPopulate(id: string) {
+    try {
+      if (isValidObjectId(id)) {
+        let doc: any;
         // Pregunto si estoy en la colección de carrito (u orden) para poder trae toda la info
         // de sus productos los cuales obtengo con 'populate'
         if (this.collection === 'cart' || this.collection === 'order') {
           doc = await this.model.findById(id).populate('productos.prodId');
-        } else {
-          doc = await this.model.findById(id);
-          if (doc)
-            switch (this.collection) {
-              // Como productos y mensajes tienen sus dto, devuelvo el dto de uno u otro según corresponda
-              case 'product':
-                return new ProductsDTO(doc, true);
-
-              case 'message':
-                return new MessagesDTO(doc, true);
-              default:
-                break;
-            }
         }
         return doc;
       } else {

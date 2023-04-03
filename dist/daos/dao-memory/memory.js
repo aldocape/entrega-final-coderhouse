@@ -43,7 +43,11 @@ const carts = [
         id: '6421fd48c1e8aa6ceb8c50ac',
         productos: [
             {
-                prodId: 'a8d94e59-8b02-4e39-b382-f6a75343326d',
+                prodId: {
+                    id: 'a8d94e59-8b02-4e39-b382-f6a75343326d',
+                    nombre: 'Tablet Philco',
+                    precio: 30799,
+                },
                 nombre: 'Tablet Philco',
                 cantidad: 3,
             },
@@ -101,6 +105,7 @@ class DaoMemory {
     save(document) {
         return __awaiter(this, void 0, void 0, function* () {
             document.id = (0, uuid_1.v4)();
+            document.createdAt = new Date();
             this.recurso.push(document);
             return document;
         });
@@ -118,8 +123,44 @@ class DaoMemory {
             }
         });
     }
+    // Esta función está pensada para poder traer carritos (u órdenes)
+    // con algunos datos de sus productos que vamos a buscar a la colección de productos
+    getWithPopulate(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const recurso2 = products;
+                const item = this.recurso.find((e) => id == e.id);
+                if (item) {
+                    let product;
+                    // Una vez que encontré el carrito (o la orden), lo recorro para obtener el id de sus productos
+                    // y buscar el precio actual del producto en la colección de productos
+                    for (let i = 0; i < item.productos.length; i++) {
+                        product = recurso2.find((prod) => prod.id == item.productos[i].prodId);
+                        if (product) {
+                            // Si el producto existe, guardo su nombre y precio actual en el objeto carrito (u orden) que devuelvo
+                            item.productos[i].prodId = {
+                                id: product.id,
+                                nombre: product.nombre,
+                                precio: product.precio,
+                            };
+                        }
+                    }
+                    return item;
+                }
+                if (item)
+                    return item;
+                return 0;
+            }
+            catch (err) {
+                logger_1.default.error(`ERROR => ${err}`);
+            }
+        });
+    }
     leerId(elem) {
         return elem.id;
+    }
+    compare(obj1, obj2) {
+        return obj1.id == obj2;
     }
     getMany(query) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -149,10 +190,11 @@ class DaoMemory {
     update(id, item) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const index = this.recurso.findIndex((elem) => id === elem.id);
+                const index = this.recurso.findIndex((elem) => id == elem.id);
                 if (index < 0)
                     return 0;
                 // Si el item buscado existe, lo reemplazo con el nuevo que viene por parámetro
+                item.id = id;
                 this.recurso.splice(index, 1, item);
                 // Devuelvo el elemento modificado
                 return item;

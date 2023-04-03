@@ -136,23 +136,40 @@ class DaoMongoDB {
             try {
                 if ((0, tools_1.isValidObjectId)(id)) {
                     let doc;
+                    doc = yield this.model.findById(id);
+                    if (doc)
+                        switch (this.collection) {
+                            // Como productos y mensajes tienen sus dto, devuelvo el dto de uno u otro según corresponda
+                            case 'product':
+                                return new products_dto_1.default(doc, true);
+                            case 'message':
+                                return new messages_dto_1.default(doc, true);
+                            default:
+                                break;
+                        }
+                    return doc;
+                }
+                else {
+                    return {
+                        error: true,
+                        msg: 'El id proporcionado no es un ObjectId válido para MongoDB',
+                    };
+                }
+            }
+            catch (err) {
+                logger_1.default.error(`ERROR => ${err}`);
+            }
+        });
+    }
+    getWithPopulate(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                if ((0, tools_1.isValidObjectId)(id)) {
+                    let doc;
                     // Pregunto si estoy en la colección de carrito (u orden) para poder trae toda la info
                     // de sus productos los cuales obtengo con 'populate'
                     if (this.collection === 'cart' || this.collection === 'order') {
                         doc = yield this.model.findById(id).populate('productos.prodId');
-                    }
-                    else {
-                        doc = yield this.model.findById(id);
-                        if (doc)
-                            switch (this.collection) {
-                                // Como productos y mensajes tienen sus dto, devuelvo el dto de uno u otro según corresponda
-                                case 'product':
-                                    return new products_dto_1.default(doc, true);
-                                case 'message':
-                                    return new messages_dto_1.default(doc, true);
-                                default:
-                                    break;
-                            }
                     }
                     return doc;
                 }

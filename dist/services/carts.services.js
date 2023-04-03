@@ -20,7 +20,7 @@ function saveCart(cart) {
 exports.saveCart = saveCart;
 function getCartById(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const cart = yield (0, daos_1.getById)('cart', id);
+        const cart = yield (0, daos_1.getWithPopulate)('cart', id);
         return cart;
     });
 }

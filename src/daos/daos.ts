@@ -86,6 +86,18 @@ export async function getById(collection: string, id: string) {
   }
 }
 
+export async function getWithPopulate(collection: string, id: string) {
+  switch (collection) {
+    case 'cart':
+      return await cartsHandler.getWithPopulate(id);
+
+    case 'order':
+      return await ordersHandler.getWithPopulate(id);
+    default:
+      break;
+  }
+}
+
 export async function deleteById(collection: string, id: string) {
   switch (collection) {
     case 'product':

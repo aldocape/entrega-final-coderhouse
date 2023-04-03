@@ -67,25 +67,35 @@ class DaoFileSystem {
             }
         });
     }
-    getCartById(id) {
+    // Esta función está pensada para poder traer carritos (u órdenes)
+    // con algunos datos de sus productos que vamos a buscar a la colección de productos
+    getWithPopulate(id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Intento leer el archivo, y si existe guardo los datos en un objeto 'info'
                 const filePath = path_1.default.resolve(__dirname, this.file);
                 const content = yield fs_1.default.promises.readFile(filePath, 'utf8');
                 const info = JSON.parse(content);
+                // En info guardamos todos los carritos, u órdenes en su caso
                 const filePathProds = path_1.default.resolve(__dirname, '../../../products.json');
                 const contentProds = yield fs_1.default.promises.readFile(filePathProds, 'utf8');
                 const infoProds = JSON.parse(contentProds);
-                // Con el método 'find' de array, busco el item que tenga el mismo id que el que se busca
+                // En infoProds tenemos todos los productos
+                // Busco el carrito por id
                 let item = info.find((e) => e.id == id);
                 if (item) {
                     let product;
+                    // Una vez que encontré el carrito (o la orden), lo recorro para obtener el id de sus productos
+                    // y buscar el precio actual del producto en la colección de productos
                     for (let i = 0; i < item.productos.length; i++) {
-                        product = infoProds.find((e) => e.id == item.productos[i].prodId);
+                        product = infoProds.find((prod) => prod.id == item.productos[i].prodId);
                         if (product) {
-                            item.productos[i].prodId.id = product.id;
-                            item.productos[i].prodId.precio = product.precio;
+                            // Si el producto existe, guardo su nombre y precio actual en el objeto carrito (u orden) que devuelvo
+                            item.productos[i].prodId = {
+                                id: product.id,
+                                nombre: product.nombre,
+                                precio: product.precio,
+                            };
                         }
                     }
                     return item;
@@ -121,7 +131,7 @@ class DaoFileSystem {
         });
     }
     compare(obj1, obj2) {
-        return obj1 === obj2;
+        return obj1.id == obj2;
     }
     getMany(query) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -161,6 +171,7 @@ class DaoFileSystem {
                 // Si salió todo bien, es decir, no se va al catch, entonces almaceno los datos como objeto
                 const itemsList = JSON.parse(content);
                 document.id = (0, uuid_1.v4)();
+                document.createdAt = new Date();
                 // Agrego al array el nuevo item
                 itemsList.push(document);
                 try {

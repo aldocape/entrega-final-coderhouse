@@ -27,7 +27,7 @@ function getOrders(query) {
 exports.getOrders = getOrders;
 function getOrderById(id) {
     return __awaiter(this, void 0, void 0, function* () {
-        const order = yield (0, daos_1.getById)('order', id);
+        const order = yield (0, daos_1.getWithPopulate)('order', id);
         return order;
     });
 }

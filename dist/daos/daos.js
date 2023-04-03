@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.leerId = exports.compare = exports.matchPassword = exports.encrypt = exports.getMany = exports.findOne = exports.update = exports.deleteAll = exports.deleteById = exports.getById = exports.getAll = exports.save = void 0;
+exports.leerId = exports.compare = exports.matchPassword = exports.encrypt = exports.getMany = exports.findOne = exports.update = exports.deleteAll = exports.deleteById = exports.getWithPopulate = exports.getById = exports.getAll = exports.save = void 0;
 const config_1 = __importDefault(require("../config"));
 const factory_1 = require("./factory");
 let DAO;
@@ -100,6 +100,19 @@ function getById(collection, id) {
     });
 }
 exports.getById = getById;
+function getWithPopulate(collection, id) {
+    return __awaiter(this, void 0, void 0, function* () {
+        switch (collection) {
+            case 'cart':
+                return yield cartsHandler.getWithPopulate(id);
+            case 'order':
+                return yield ordersHandler.getWithPopulate(id);
+            default:
+                break;
+        }
+    });
+}
+exports.getWithPopulate = getWithPopulate;
 function deleteById(collection, id) {
     return __awaiter(this, void 0, void 0, function* () {
         switch (collection) {

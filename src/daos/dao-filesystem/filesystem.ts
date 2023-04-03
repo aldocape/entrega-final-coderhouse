@@ -65,29 +65,40 @@ export default class DaoFileSystem {
     }
   }
 
-  async getCartById(id: string) {
+  // Esta función está pensada para poder traer carritos (u órdenes)
+  // con algunos datos de sus productos que vamos a buscar a la colección de productos
+  async getWithPopulate(id: string) {
     try {
       // Intento leer el archivo, y si existe guardo los datos en un objeto 'info'
       const filePath = path.resolve(__dirname, this.file);
       const content = await fs.promises.readFile(filePath, 'utf8');
       const info = JSON.parse(content);
+      // En info guardamos todos los carritos, u órdenes en su caso
 
       const filePathProds = path.resolve(__dirname, '../../../products.json');
       const contentProds = await fs.promises.readFile(filePathProds, 'utf8');
       const infoProds = JSON.parse(contentProds);
+      // En infoProds tenemos todos los productos
 
-      // Con el método 'find' de array, busco el item que tenga el mismo id que el que se busca
+      // Busco el carrito por id
       let item = info.find((e: any) => e.id == id);
 
       if (item) {
         let product;
+        // Una vez que encontré el carrito (o la orden), lo recorro para obtener el id de sus productos
+        // y buscar el precio actual del producto en la colección de productos
         for (let i = 0; i < item.productos.length; i++) {
           product = infoProds.find(
-            (e: any) => e.id == item.productos[i].prodId
+            (prod: any) => prod.id == item.productos[i].prodId
           );
+
           if (product) {
-            item.productos[i].prodId.id = product.id;
-            item.productos[i].prodId.precio = product.precio;
+            // Si el producto existe, guardo su nombre y precio actual en el objeto carrito (u orden) que devuelvo
+            item.productos[i].prodId = {
+              id: product.id,
+              nombre: product.nombre,
+              precio: product.precio,
+            };
           }
         }
         return item;
@@ -123,7 +134,7 @@ export default class DaoFileSystem {
   }
 
   compare(obj1: any, obj2: any) {
-    return obj1 === obj2;
+    return obj1.id == obj2;
   }
 
   async getMany(query: any) {
@@ -167,6 +178,7 @@ export default class DaoFileSystem {
       // Si salió todo bien, es decir, no se va al catch, entonces almaceno los datos como objeto
       const itemsList = JSON.parse(content);
       document.id = uuidv4();
+      document.createdAt = new Date();
 
       // Agrego al array el nuevo item
       itemsList.push(document);

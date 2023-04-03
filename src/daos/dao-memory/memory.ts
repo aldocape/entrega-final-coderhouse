@@ -32,7 +32,11 @@ const carts: any = [
     id: '6421fd48c1e8aa6ceb8c50ac',
     productos: [
       {
-        prodId: 'a8d94e59-8b02-4e39-b382-f6a75343326d',
+        prodId: {
+          id: 'a8d94e59-8b02-4e39-b382-f6a75343326d',
+          nombre: 'Tablet Philco',
+          precio: 30799,
+        },
         nombre: 'Tablet Philco',
         cantidad: 3,
       },
@@ -100,6 +104,7 @@ export default class DaoMemory {
 
   async save(document: any) {
     document.id = uuidv4();
+    document.createdAt = new Date();
     this.recurso.push(document);
     return document;
   }
@@ -107,6 +112,44 @@ export default class DaoMemory {
   async getById(id: string) {
     try {
       const item = this.recurso.find((e: any) => id === e.id);
+
+      if (item) return item;
+      return 0;
+    } catch (err) {
+      logger.error(`ERROR => ${err}`);
+    }
+  }
+
+  // Esta función está pensada para poder traer carritos (u órdenes)
+  // con algunos datos de sus productos que vamos a buscar a la colección de productos
+  async getWithPopulate(id: string) {
+    try {
+      const recurso2 = products;
+
+      const item = this.recurso.find((e: any) => id == e.id);
+
+      if (item) {
+        let product;
+
+        // Una vez que encontré el carrito (o la orden), lo recorro para obtener el id de sus productos
+        // y buscar el precio actual del producto en la colección de productos
+        for (let i = 0; i < item.productos.length; i++) {
+          product = recurso2.find(
+            (prod: any) => prod.id == item.productos[i].prodId
+          );
+          if (product) {
+            // Si el producto existe, guardo su nombre y precio actual en el objeto carrito (u orden) que devuelvo
+            item.productos[i].prodId = {
+              id: product.id,
+              nombre: product.nombre,
+              precio: product.precio,
+            };
+          }
+        }
+
+        return item;
+      }
+
       if (item) return item;
       return 0;
     } catch (err) {
@@ -116,6 +159,10 @@ export default class DaoMemory {
 
   leerId(elem: any) {
     return elem.id;
+  }
+
+  compare(obj1: any, obj2: any) {
+    return obj1.id == obj2;
   }
 
   async getMany(query: any) {
@@ -147,11 +194,11 @@ export default class DaoMemory {
 
   async update(id: string, item: any) {
     try {
-      const index = this.recurso.findIndex((elem: any) => id === elem.id);
-
+      const index = this.recurso.findIndex((elem: any) => id == elem.id);
       if (index < 0) return 0;
 
       // Si el item buscado existe, lo reemplazo con el nuevo que viene por parámetro
+      item.id = id;
       this.recurso.splice(index, 1, item);
       // Devuelvo el elemento modificado
       return item;

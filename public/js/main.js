@@ -337,7 +337,7 @@ function outputCart(cartId) {
   api(`/api/carrito/${cartId}/productos`, 'GET').then((cart) => {
     let text;
 
-    if (cart.cart.productos.length) {
+    if (cart.success && cart.cart.productos.length) {
       text =
         '<p>Su carrito de compras tiene los siguientes elementos:<br /><br />';
 

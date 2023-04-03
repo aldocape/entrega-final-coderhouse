@@ -35,7 +35,7 @@ const sendMail = (orden, direccion_entrega, username) => __awaiter(void 0, void 
       Dirección de entrega: ${direccion_entrega}<br /></p>
       <p>Productos:<br /><ul>`;
     for (let i = 0; i < orden.productos.length; i++) {
-        content += `<li>Nombre:${orden.productos[i].prodId.nombre} - Cantidad: ${orden.productos[i].cantidad} - Precio: ${orden.productos[i].precio}</li>`;
+        content += `<li>Nombre:${orden.productos[i].prodId.nombre} - Cantidad: ${orden.productos[i].cantidad} - Precio: $${orden.productos[i].precio}</li>`;
     }
     content += `</ul></p><p>Generada el día y hora: ${orden.createdAt}<br />
       E-mail del usuario que generó la orden: ${username}<br />

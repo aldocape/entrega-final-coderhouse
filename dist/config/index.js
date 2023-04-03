@@ -11,7 +11,7 @@ const helpers_1 = require("yargs/helpers");
 const args = (0, yargs_1.default)((0, helpers_1.hideBin)(process.argv))
     .default('mode', 'fork')
     .default('port', '8080')
-    .default('dao', 'mongo').argv;
+    .default('dao', 'memory').argv;
 const argv = (0, yargs_1.default)(process.argv).argv;
 let mongoDBSRV = process.env.MONGO_ATLAS_SRV ||
     'mongodb://aldo:123456@localhost:27017/ecommerce';

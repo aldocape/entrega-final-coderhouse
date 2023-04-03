@@ -1,4 +1,4 @@
-import { save, getById, deleteById, update } from '../daos/daos';
+import { save, deleteById, update, getWithPopulate } from '../daos/daos';
 import { Carrito } from '../interfaces';
 
 export async function saveCart(cart: Carrito) {
@@ -7,7 +7,7 @@ export async function saveCart(cart: Carrito) {
 }
 
 export async function getCartById(id: string) {
-  const cart = await getById('cart', id);
+  const cart = await getWithPopulate('cart', id);
   return cart;
 }
 
