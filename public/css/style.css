@@ -103,3 +103,15 @@ button#btnCart,
 input#direccion_entrega {
   margin-left: 5px;
 }
+
+div#closedChatBot {
+  position: fixed;
+  bottom: 10px;
+  right: 20px;
+  height: 55px;
+  width: 130px;
+  z-index: 1;
+  background-color: rgb(239, 241, 206);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.16);
+  border-radius: 8px;
+}

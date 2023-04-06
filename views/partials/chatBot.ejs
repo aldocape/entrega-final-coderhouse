@@ -1,6 +1,14 @@
 <div id="chat-bot" class="is-hidden">
   <div style="background-color: rgb(219, 214, 206); margin-top: 8px">
-    <p style="text-align: center">Chat BOT</p>
+    <p style="display: inline-block; margin-left: 8px">Chat BOT</p>
+    <button
+      type="button"
+      id="btnClosechatBot"
+      onclick="document.getElementById('chat-bot').classList.add('is-hidden'); document.getElementById('closedChatBot').classList.remove('is-hidden');"
+      style="float: right; margin-right: 8px"
+      class="btn-close"
+      aria-label="Close"
+    ></button>
   </div>
   <div id="botMessages"></div>
   <div id="userMessages">
@@ -19,4 +27,14 @@
       </button>
     </form>
   </div>
+</div>
+<div id="closedChatBot" class="is-hidden">
+  <button
+    type="button"
+    style="margin: 8px 0 0 5px"
+    class="btn btn-primary"
+    onclick="document.getElementById('chat-bot').classList.remove('is-hidden'); document.getElementById('closedChatBot').classList.add('is-hidden');"
+  >
+    Mostrar chat
+  </button>
 </div>
